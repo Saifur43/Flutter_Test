@@ -1,29 +1,26 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 
-class WorldTime{
+class WorldTime {
   String location;
   late String time;
   String flag;
   String url;
-  
+
   WorldTime({required this.location, required this.flag, required this.url});
-  
-  
-  Future<void> getData() async {
-    
-    Response response = await get("https://worldtimeapi.org/api/timezone/$url" as Uri);
-    Map data = jsonEncode(response.body) as Map;
-    
+
+  Future<String> getData() async {
+    var response =
+        await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
+    var data = jsonDecode(response.body);
+    print(data);
     String datetime = data['datetime'];
-    String offset = data['offset'];
+    String offset = data['utc_offset'];
 
     DateTime now = DateTime.parse(datetime);
-    now = now.add(Duration(hours: int.parse(offset)));
+    now = now.add(Duration(hours: int.parse(offset.split(":").first)));
 
     time = now.toString();
-    print(time);
+    return time;
   }
-
 }
-
