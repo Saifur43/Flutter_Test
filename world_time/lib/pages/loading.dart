@@ -12,7 +12,7 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   String? time;
 
-  void setupWorldTime(BuildContext context) async {
+  Future<void> setupWorldTime(BuildContext context) async {
     WorldTime instance =
         WorldTime(location: 'Dhaka', flag: 'germany.png', url: 'Asia/Dhaka');
     await instance.getData();
@@ -21,7 +21,11 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    setupWorldTime(context);
+    getAsyncData();
+  }
+
+  getAsyncData() async {
+    await setupWorldTime(context);
   }
 
   @override
