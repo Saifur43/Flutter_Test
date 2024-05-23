@@ -10,17 +10,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Map data = {};
+  var data ;
 
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute.of(context)?.settings.arguments as Map;
-    print(data);
+    data = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    print("get data from previous screen ${data}");
 
     return Scaffold(
       //appBar: AppBar(),
@@ -40,7 +42,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    data['location'],
+                    data['location']??'',
                     style: TextStyle(
                       fontSize: 28.0,
                       letterSpacing: 2.0,
@@ -49,7 +51,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: 20.0),
-              Text(data['time'],
+              Text(data['time']??'',
                   style: TextStyle(
                     fontSize: 66.0,
                   )),
