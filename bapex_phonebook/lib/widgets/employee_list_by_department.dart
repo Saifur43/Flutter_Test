@@ -10,7 +10,7 @@ class EmployeeListByDepartmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Employees in $department')),
+      appBar: AppBar(title: Text(department)),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('employees')
@@ -20,9 +20,9 @@ class EmployeeListByDepartmentPage extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
-    
+
           var employees = snapshot.data!.docs;
-    
+
           return ListView.builder(
             itemCount: employees.length,
             itemBuilder: (context, index) {
@@ -38,7 +38,8 @@ class EmployeeListByDepartmentPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EmployeeDetailsPage(employeeRef: employee.reference),
+                      builder: (context) =>
+                          EmployeeDetailsPage(employeeRef: employee.reference),
                     ),
                   );
                 },

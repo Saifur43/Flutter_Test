@@ -17,7 +17,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Employees'),
+        title: const Text('Search'),
       ),
       body: Column(
         children: [
@@ -40,7 +40,10 @@ class _SearchPageState extends State<SearchPage> {
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: (query.isEmpty)
-                  ? FirebaseFirestore.instance.collection('employees').orderBy('name').snapshots()
+                  ? FirebaseFirestore.instance
+                      .collection('employees')
+                      .orderBy('name')
+                      .snapshots()
                   : FirebaseFirestore.instance
                       .collection('employees')
                       .where('name', isGreaterThanOrEqualTo: query)
@@ -67,13 +70,15 @@ class _SearchPageState extends State<SearchPage> {
                       subtitle: Text(employee['email']),
                       trailing: Text(employee['department']),
                       leading: employee['picture'] != null
-                          ? Image.network(employee['picture'], width: 50, height: 50)
+                          ? Image.network(employee['picture'],
+                              width: 50, height: 50)
                           : const Icon(Icons.person),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EmployeeDetailsPage(employeeRef: employee.reference),
+                            builder: (context) => EmployeeDetailsPage(
+                                employeeRef: employee.reference),
                           ),
                         );
                       },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_test/widgets/employee_list_by_department.dart';
 
-
 class DepartmentPage extends StatelessWidget {
   final String division;
 
@@ -11,7 +10,7 @@ class DepartmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Departments in $division')),
+      appBar: AppBar(title: Text(division)),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('employees')
@@ -38,7 +37,8 @@ class DepartmentPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EmployeeListByDepartmentPage(department: department),
+                      builder: (context) =>
+                          EmployeeListByDepartmentPage(department: department),
                     ),
                   );
                 },

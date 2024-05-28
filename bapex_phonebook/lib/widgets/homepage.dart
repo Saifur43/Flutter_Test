@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_test/widgets/employe.dart';
 import 'package:firebase_test/widgets/division_page.dart';
 import 'package:firebase_test/widgets/search_page.dart';
+import 'package:firebase_test/widgets/org_info.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -37,6 +38,17 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.people),
+              title: const Text('Officers'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EmployeeListPage()),
+                );
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.business),
               title: const Text('Division'),
               onTap: () {
@@ -49,7 +61,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: const EmployeeListPage(),
+      body: const InfoPage(),
     );
   }
 }
