@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_test/login/auth/auth_service.dart';
 import 'package:firebase_test/widgets/search_page.dart';
+import 'package:firebase_test/login/auth/login_screen.dart';
+import 'package:firebase_test/login/widgets/button.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({super.key});
 
+  goToLogin(BuildContext context) => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+
   @override
   Widget build(BuildContext context) {
+    final auth = AuthService();
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -52,19 +61,22 @@ class InfoPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SearchPage()),
-                  );
-                },
-                child: const Icon(Icons.search),
-              ),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                );
+              },
+              child: const Icon(Icons.search),
             ),
+            CustomButton(
+              label: "Sign Out",
+              onPressed: () async {
+                await auth.signout();
+                goToLogin(context);
+              },
+            )
           ],
         ),
       ),
