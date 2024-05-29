@@ -36,6 +36,7 @@ class InfoPage extends StatelessWidget {
                       .textTheme
                       .headlineSmall
                       ?.copyWith(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -70,6 +71,7 @@ class InfoPage extends StatelessWidget {
               },
               child: const Icon(Icons.search),
             ),
+            const SizedBox(height: 20),
             CustomButton(
               label: "Sign Out",
               onPressed: () async {
