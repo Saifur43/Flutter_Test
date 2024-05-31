@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
+import 'package:expense_tracker/widgets/chart/chart.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -11,7 +12,6 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-
   final List<Expense> _resiteredExpenses = [
     Expense(
       title: 'Fired Chicken',
@@ -27,30 +27,68 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
-  void _openAddExpenseOverlay(){
+  void _openAddExpenseOverlay() {
     showModalBottomSheet(
-      context: context, 
-      builder: (ctx) => const NewExpense(),
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(onAddExpense: _addExpenses),
+    );
+  }
+
+  void _addExpenses(Expense expense) {
+    setState(() {
+      _resiteredExpenses.add(expense);
+    });
+  }
+
+  void _removeExpenses(Expense expense) {
+    final expenseIndex = _resiteredExpenses.indexOf(expense);
+    setState(() {
+      _resiteredExpenses.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('Expense Deleted!'),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _resiteredExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text('No Expenses Found. Start Adding Some!'),
+    );
+    if (_resiteredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expense: _resiteredExpenses,
+        onRemoveExpense: _removeExpenses,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expenses Tracker'),
         actions: [
           IconButton(
-            onPressed: _openAddExpenseOverlay, 
+            onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
-            ),
+          ),
         ],
-        ),
+      ),
       body: Column(
         children: [
-          const Text('data'),
+          Chart(expenses: _resiteredExpenses),
           Expanded(
-            child: ExpensesList(expense:_resiteredExpenses)
+            child: mainContent,
           ),
         ],
       ),
